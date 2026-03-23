@@ -1,0 +1,12 @@
+# Configuration template
+
+# API Keys
+API_KEY: "your_api_key_here"
+
+# Database Settings
+DATABASE: 
+  HOST: "localhost"
+  PORT: 5432
+  USER: "db_user"
+  PASSWORD: "db_password"
+  NAME: "database_name"
