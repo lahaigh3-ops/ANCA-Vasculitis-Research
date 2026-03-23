@@ -238,6 +238,79 @@ function SignalBadge({ signal }) {
   );
 }
 
+function SignalLegend() {
+  const items = [
+    {
+      signal: "positive",
+      bg: "#065F46",
+      text: "#6EE7B7",
+      label: "Positive Signal",
+      definition: "Phase 2+ trial with statistically significant primary endpoint met, OR regulatory approval granted.",
+    },
+    {
+      signal: "promising",
+      bg: "#1E3A5F",
+      text: "#93C5FD",
+      label: "Promising",
+      definition: "Phase 1 or preclinical data showing mechanism-of-action evidence, early safety, or meaningful remission in small cohorts — no powered efficacy trial yet.",
+    },
+    {
+      signal: "neutral",
+      bg: "#374151",
+      text: "#9CA3AF",
+      label: "Awaiting Data",
+      definition: "Trial ongoing or recently completed with no efficacy readout published yet.",
+    },
+    {
+      signal: "negative",
+      bg: "#7F1D1D",
+      text: "#FCA5A5",
+      label: "Negative Signal",
+      definition: "Primary endpoint not met or trial discontinued due to safety or futility.",
+    },
+  ];
+
+  return (
+    <div
+      style={{
+        background: "rgba(15,23,42,0.5)",
+        border: "1px solid rgba(148,163,184,0.08)",
+        borderRadius: "10px",
+        padding: "16px 20px",
+        marginBottom: "24px",
+      }}
+    >
+      <div style={{ fontSize: "11px", fontWeight: 700, color: "#475569", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>
+        Signal Definitions
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "10px" }}>
+        {items.map((item) => (
+          <div key={item.signal} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+            <span
+              style={{
+                background: item.bg,
+                color: item.text,
+                padding: "2px 10px",
+                borderRadius: "12px",
+                fontSize: "10px",
+                fontWeight: 600,
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                marginTop: "1px",
+              }}
+            >
+              {item.label}
+            </span>
+            <span style={{ fontSize: "12px", color: "#64748B", lineHeight: 1.5 }}>{item.definition}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function TrialCard({ trial, isExpanded, onToggle }) {
   const phaseColor = PHASE_COLORS[trial.phase] || "#6B7280";
   const statusIcon = STATUS_ICONS[trial.status] || "?";
@@ -626,6 +699,8 @@ export default function ANCATrialsDashboard() {
 
         <StatsBar trials={trials} />
 
+        <SignalLegend />
+
         {/* Filters */}
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "20px", alignItems: "center" }}>
           <input
@@ -698,6 +773,8 @@ export default function ANCATrialsDashboard() {
           }}
         >
           <div>Data sources: ClinicalTrials.gov · PubMed · Nature Reviews Rheumatology · Frontiers in Immunology</div>
+          <div>Registries: VCRC (Vasculitis Clinical Research Consortium) · EUVAS (European Vasculitis Society) · ERA-EDTA Registry</div>
+          <div>Evidence: Cochrane Systematic Reviews · FDA Drug Trials Snapshots · EMA EPAR Database</div>
           <div>AI updates powered by Claude with live web search · Not medical advice — consult your physician</div>
         </div>
       </div>
