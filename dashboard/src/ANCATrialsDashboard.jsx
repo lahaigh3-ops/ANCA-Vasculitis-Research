@@ -212,6 +212,143 @@ const SEED_TRIALS = [
   },
 ];
 
+const DISEASE_CONNECTIONS = [
+  {
+    id: "gpa",
+    name: "GPA — Granulomatosis with Polyangiitis",
+    subtitle: "Formerly Wegener's Granulomatosis",
+    color: "#3B82F6",
+    researchSummary:
+      "GPA is the most common form of ANCA-associated vasculitis, predominantly driven by PR3-ANCA antibodies in ~75% of cases. It causes granulomatous inflammation of small and medium vessels with a predilection for the upper airways, lungs, and kidneys. Modern treatment with rituximab (established by the RAVE trial) achieves remission in ~75% of patients at 18 months. Active research includes CAR-T cell therapy for refractory disease, rituximab maintenance optimization (RITAZAREM), next-generation anti-CD20 agents, and biomarker-guided dosing.",
+    symptoms: [
+      "Upper airway: chronic sinusitis, nosebleeds, nasal crusting, saddle-nose deformity, subglottic stenosis",
+      "Ear: chronic otitis media, conductive hearing loss",
+      "Lung: cough, shortness of breath, pulmonary infiltrates or hemorrhage",
+      "Kidney: blood or protein in urine, rising creatinine",
+      "Eye: redness, pain, proptosis from orbital granuloma, scleritis",
+      "Skin: purpura, ulcers, or nodules",
+      "Joints: pain and swelling",
+      "Systemic: fatigue, weight loss, fever",
+    ],
+    doctorTips: [
+      "Ask about ANCA subtype: 'Is my ANCA PR3 or MPO — and how does that change my relapse risk or treatment plan?'",
+      "Ask about maintenance: 'How long should I remain on rituximab maintenance, and how will we know when it's safe to stop?'",
+      "Ask about monitoring: 'Which symptoms or lab changes should prompt me to call before my next scheduled visit?'",
+      "Ask about ENT co-management: 'Should I see an ENT specialist for my upper airway disease separately from my rheumatologist?'",
+      "Ask about trials: 'Given my disease history, am I a candidate for any open clinical trials?'",
+    ],
+    disclaimer:
+      "For educational purposes only — not a substitute for professional medical advice. Symptoms of GPA overlap with many conditions; always discuss new or worsening symptoms with your care team promptly.",
+  },
+  {
+    id: "mpa",
+    name: "MPA — Microscopic Polyangiitis",
+    subtitle: null,
+    color: "#10B981",
+    researchSummary:
+      "MPA is a small-vessel vasculitis associated with MPO-ANCA in ~60–70% of cases. Unlike GPA it rarely involves granulomas or upper airway disease, but causes severe glomerulonephritis and pulmonary capillaritis. Avacopan (C5a receptor blocker, FDA-approved 2021) demonstrated superior kidney recovery versus prednisone taper in the ADVOCATE trial. Key research areas include complement pathway biology, pulmonary fibrosis as a late complication even in remission, and biomarkers MMP-3 and CXCL13 for non-invasive disease activity monitoring.",
+    symptoms: [
+      "Kidney: hematuria, proteinuria, rapidly progressive glomerulonephritis",
+      "Lung: cough, hemoptysis, pulmonary infiltrates or diffuse alveolar hemorrhage",
+      "Pulmonary fibrosis (can develop even during remission)",
+      "Peripheral neuropathy: numbness, tingling, or weakness in limbs",
+      "Skin: purpura, livedo reticularis",
+      "Systemic: profound fatigue, fever, weight loss",
+      "Gastrointestinal: abdominal pain or bleeding (less common)",
+    ],
+    doctorTips: [
+      "Ask about avacopan: 'Is Tavneos appropriate for my degree of kidney involvement alongside standard induction?'",
+      "Ask about lung surveillance: 'Should I have periodic pulmonary function tests to screen for fibrosis, even when my disease is quiet?'",
+      "Ask about kidney trajectory: 'What is my kidney function trend, and at what point should we discuss transplant planning?'",
+      "Ask about neuropathy: 'Should I be assessed for peripheral nerve damage, and is it reversible with treatment?'",
+      "Ask about maintenance: 'How long should I stay on maintenance immunosuppression given my MPO-ANCA status?'",
+    ],
+    disclaimer:
+      "For educational purposes only — not a substitute for professional medical advice. MPA can present similarly to other vasculitides; accurate diagnosis requires specialist evaluation including ANCA testing and often tissue biopsy.",
+  },
+  {
+    id: "egpa",
+    name: "EGPA — Eosinophilic Granulomatosis with Polyangiitis",
+    subtitle: "Formerly Churg-Strauss Syndrome",
+    color: "#F59E0B",
+    researchSummary:
+      "EGPA is distinguished by marked peripheral eosinophilia, adult-onset asthma, and allergic disease. Only ~30–40% of patients are ANCA-positive (usually MPO-ANCA); ANCA-positive patients have higher rates of renal and neurological involvement, while ANCA-negative patients more often develop eosinophilic cardiac and pulmonary disease. The MIRRA trial established mepolizumab (anti-IL-5) as a steroid-sparing agent; the ongoing E-merge trial (NCT05030155) is evaluating it for remission induction. Cardiac involvement remains the leading cause of EGPA-related death.",
+    symptoms: [
+      "Severe, difficult-to-control asthma — often new onset in adulthood",
+      "Allergic rhinitis, nasal polyps, chronic sinusitis",
+      "Peripheral eosinophilia (markedly elevated eosinophil count on blood work)",
+      "Peripheral neuropathy: mononeuritis multiplex causing footdrop or wrist drop",
+      "Cardiac: cardiomyopathy, pericardial effusion, heart failure, arrhythmia",
+      "Skin: purpura, subcutaneous nodules",
+      "Gastrointestinal: eosinophilic gastroenteritis, abdominal pain",
+      "Lung: fleeting infiltrates, pleural effusion",
+    ],
+    doctorTips: [
+      "Ask about cardiac screening: 'Should I have an echocardiogram and cardiac MRI to rule out eosinophilic heart disease?'",
+      "Ask about mepolizumab: 'Am I a candidate for Nucala to reduce my steroid dependence?'",
+      "Ask about ANCA risk stratification: 'Does my ANCA result change my risk for kidney or neurological complications?'",
+      "Ask about multidisciplinary care: 'Should my allergist and pulmonologist be actively involved alongside my rheumatologist?'",
+      "Ask about cardiac monitoring: 'How often should cardiac imaging be repeated given my eosinophil levels?'",
+    ],
+    disclaimer:
+      "For educational purposes only — not a substitute for professional medical advice. EGPA is rare and diagnostically complex. Cardiac involvement can be life-threatening and requires specialist evaluation.",
+  },
+  {
+    id: "pachymeningitis",
+    name: "Hypertrophic Pachymeningitis",
+    subtitle: "Neurological manifestation associated with GPA / AAV",
+    color: "#8B5CF6",
+    communityNote:
+      "Some members of ANCA vasculitis patient communities report being diagnosed with arachnoid cysts alongside GPA-related pachymeningitis. This co-occurrence is not yet well-characterized in the published literature, but patient-reported accounts suggest it may warrant clinical attention. If you have both conditions, documenting this history with your neurologist and rheumatologist — and specifically asking whether the two could be connected — may help build awareness of this potential association.",
+    researchSummary:
+      "Hypertrophic pachymeningitis (HP) is inflammation and fibrotic thickening of the dura mater — the outer lining of the brain and spinal cord. In AAV it occurs as a rare but serious neurological manifestation, most often in PR3-ANCA-positive GPA. Diagnosis relies on MRI with gadolinium contrast showing dural enhancement, combined with ANCA serology; biopsy is sometimes required. Evidence for treatment comes primarily from case series: rituximab has shown meaningful benefit in refractory cases. Diagnosis is frequently delayed due to the nonspecific nature of early symptoms.",
+    symptoms: [
+      "Severe, persistent headache — the most common presenting symptom",
+      "Cranial nerve palsies: double vision, facial numbness or weakness, hearing loss, drooping eyelid",
+      "Cerebellar signs: balance and coordination problems, unsteady gait",
+      "Visual disturbance or vision loss from optic nerve involvement",
+      "Hydrocephalus: headache, nausea, and cognitive slowing from CSF flow obstruction",
+      "Spinal cord compression if the spinal dura is affected: limb weakness or sensory loss",
+      "Cognitive changes or memory difficulties",
+    ],
+    doctorTips: [
+      "Ask about imaging: 'Should I have an MRI brain and spine with gadolinium contrast to look for dural thickening or enhancement?'",
+      "Ask about rituximab: 'Is rituximab appropriate for my pachymeningitis, given the case-series evidence in GPA?'",
+      "Ask about neurology co-management: 'Should a neurologist be actively co-managing my care alongside my rheumatologist?'",
+      "Ask about arachnoid cysts: 'If a cyst was found on my imaging, could it be related to my vasculitis or pachymeningitis, or is it likely incidental?'",
+      "Ask about monitoring: 'How often should I have repeat MRI to track dural disease and response to treatment?'",
+    ],
+    disclaimer:
+      "For educational purposes only — not a substitute for professional medical advice. Hypertrophic pachymeningitis is rare and its association with arachnoid cysts in AAV patients is based on patient reports rather than established clinical evidence. Specialist neurological evaluation is essential.",
+  },
+  {
+    id: "renal",
+    name: "ANCA-Associated Glomerulonephritis",
+    subtitle: "Kidney manifestation of AAV",
+    color: "#EF4444",
+    researchSummary:
+      "Renal involvement is one of the most serious manifestations of AAV and a major driver of long-term morbidity. The hallmark is pauci-immune necrotizing crescentic glomerulonephritis on biopsy — severe inflammation with little immune-complex deposition. Avacopan demonstrated superior kidney recovery versus prednisone taper at 52 weeks in ADVOCATE and is now FDA-approved for severe AAV. Emerging research targets anti-fibrotic pathways to prevent irreversible scarring, and urinary biomarkers (MMP-3, CXCL13) are being validated for non-invasive disease monitoring.",
+    symptoms: [
+      "Hematuria: visible or microscopic blood in urine",
+      "Proteinuria: foamy or frothy urine",
+      "Rapidly rising creatinine indicating rapidly progressive glomerulonephritis",
+      "Edema: swelling in legs, ankles, or around the eyes",
+      "Hypertension: new or worsening high blood pressure",
+      "Reduced urine output in severe presentations",
+      "Uremic symptoms in advanced disease: nausea, fatigue, difficulty concentrating",
+    ],
+    doctorTips: [
+      "Ask about avacopan: 'Is Tavneos indicated for my severity of kidney involvement?'",
+      "Ask about home monitoring: 'What urine or blood values should I track, and what threshold should prompt an urgent call?'",
+      "Ask about kidney biopsy: 'Would a biopsy help distinguish active inflammation from chronic scarring to guide treatment intensity?'",
+      "Ask about long-term planning: 'At what stage should we start discussing dialysis or transplantation planning?'",
+      "Ask about nephrotoxicity: 'Are any of my current medications hard on the kidneys, and should doses be adjusted for my GFR?'",
+    ],
+    disclaimer:
+      "For educational purposes only — not a substitute for professional medical advice. Kidney disease in AAV can progress rapidly — any new urinary symptoms or a rising creatinine should be evaluated urgently.",
+  },
+];
+
 function SignalBadge({ signal }) {
   const config = {
     positive: { bg: "#065F46", text: "#6EE7B7", label: "Positive Signal" },
@@ -467,8 +604,151 @@ function StatsBar({ trials }) {
   );
 }
 
+function ConnectionCard({ condition }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div
+      onClick={() => setExpanded(!expanded)}
+      style={{
+        background: "rgba(15,23,42,0.7)",
+        border: "1px solid rgba(148,163,184,0.12)",
+        borderLeft: `3px solid ${condition.color}`,
+        borderRadius: "8px",
+        padding: "20px 24px",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+        marginBottom: "12px",
+        backdropFilter: "blur(8px)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "rgba(148,163,184,0.3)";
+        e.currentTarget.style.background = "rgba(15,23,42,0.9)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "rgba(148,163,184,0.12)";
+        e.currentTarget.style.background = "rgba(15,23,42,0.7)";
+      }}
+    >
+      {/* Card header — always visible */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px" }}>
+        <div>
+          <h3
+            style={{
+              margin: "0 0 4px 0",
+              fontSize: "16px",
+              fontWeight: 600,
+              color: "#E2E8F0",
+              lineHeight: 1.4,
+              fontFamily: "'Source Serif 4', Georgia, serif",
+            }}
+          >
+            {condition.name}
+          </h3>
+          {condition.subtitle && (
+            <div style={{ fontSize: "12px", color: "#64748B", fontStyle: "italic" }}>{condition.subtitle}</div>
+          )}
+        </div>
+        <div
+          style={{
+            color: "#475569",
+            fontSize: "18px",
+            transform: expanded ? "rotate(180deg)" : "rotate(0)",
+            transition: "transform 0.2s",
+            flexShrink: 0,
+            marginTop: "2px",
+          }}
+        >
+          ▼
+        </div>
+      </div>
+
+      {expanded && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(148,163,184,0.1)", cursor: "default" }}
+        >
+          {/* Research Summary */}
+          <div style={{ marginBottom: "20px" }}>
+            <div style={{ fontSize: "11px", fontWeight: 700, color: "#475569", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>
+              Research Summary
+            </div>
+            <p style={{ margin: 0, color: "#CBD5E1", fontSize: "14px", lineHeight: 1.75 }}>
+              {condition.researchSummary}
+            </p>
+          </div>
+
+          {/* Community note — present only on pachymeningitis */}
+          {condition.communityNote && (
+            <div
+              style={{
+                background: "rgba(245,158,11,0.07)",
+                border: "1px solid rgba(245,158,11,0.2)",
+                borderRadius: "8px",
+                padding: "14px 16px",
+                marginBottom: "20px",
+              }}
+            >
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#D97706", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "6px" }}>
+                Community connection — pachymeningitis &amp; arachnoid cysts
+              </div>
+              <p style={{ margin: 0, color: "#94A3B8", fontSize: "13px", lineHeight: 1.7 }}>
+                {condition.communityNote}
+              </p>
+            </div>
+          )}
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+            {/* Known Symptoms */}
+            <div>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#475569", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "10px" }}>
+                Known Symptoms
+              </div>
+              <ul style={{ margin: 0, padding: "0 0 0 16px", display: "flex", flexDirection: "column", gap: "6px" }}>
+                {condition.symptoms.map((s, i) => (
+                  <li key={i} style={{ color: "#94A3B8", fontSize: "13px", lineHeight: 1.6 }}>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* How to talk to your doctor */}
+            <div>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#475569", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "10px" }}>
+                How to Talk to Your Doctor
+              </div>
+              <ul style={{ margin: 0, padding: "0 0 0 16px", display: "flex", flexDirection: "column", gap: "6px" }}>
+                {condition.doctorTips.map((tip, i) => (
+                  <li key={i} style={{ color: "#94A3B8", fontSize: "13px", lineHeight: 1.6 }}>
+                    {tip}
+                  </li>
+                ))}
+              </ul>
+              <div
+                style={{
+                  marginTop: "14px",
+                  padding: "10px 12px",
+                  background: "rgba(15,23,42,0.5)",
+                  borderRadius: "6px",
+                  fontSize: "11px",
+                  color: "#475569",
+                  lineHeight: 1.6,
+                }}
+              >
+                ⓘ {condition.disclaimer}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ANCATrialsDashboard() {
   const [trials] = useState(SEED_TRIALS);
+  const [activeTab, setActiveTab] = useState("trials");
   const [activeCategory, setActiveCategory] = useState("all");
   const [expandedId, setExpandedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -557,21 +837,47 @@ export default function ANCATrialsDashboard() {
               </p>
             </div>
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              {activeTab === "trials" && (
+                <button
+                  onClick={() => setShowInfo(!showInfo)}
+                  style={{
+                    background: "rgba(148,163,184,0.1)",
+                    border: "1px solid rgba(148,163,184,0.15)",
+                    color: "#94A3B8",
+                    borderRadius: "8px",
+                    padding: "8px 14px",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                  }}
+                >
+                  {showInfo ? "Hide" : "ℹ Info"}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Tab navigation */}
+          <div style={{ display: "flex", gap: "0", marginTop: "20px", borderBottom: "1px solid rgba(148,163,184,0.08)" }}>
+            {[["trials", "Clinical Trials"], ["connections", "Disease Connections"]].map(([key, label]) => (
               <button
-                onClick={() => setShowInfo(!showInfo)}
+                key={key}
+                onClick={() => setActiveTab(key)}
                 style={{
-                  background: "rgba(148,163,184,0.1)",
-                  border: "1px solid rgba(148,163,184,0.15)",
-                  color: "#94A3B8",
-                  borderRadius: "8px",
-                  padding: "8px 14px",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === key ? "2px solid #60A5FA" : "2px solid transparent",
+                  color: activeTab === key ? "#E2E8F0" : "#64748B",
+                  padding: "10px 18px",
                   cursor: "pointer",
                   fontSize: "13px",
+                  fontWeight: activeTab === key ? 600 : 400,
+                  transition: "all 0.15s",
+                  marginBottom: "-1px",
                 }}
               >
-                {showInfo ? "Hide" : "ℹ Info"}
+                {label}
               </button>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -584,90 +890,118 @@ export default function ANCATrialsDashboard() {
       `}</style>
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "28px 32px" }}>
-        {showInfo && (
-          <div
-            style={{
-              background: "rgba(30,58,95,0.3)",
-              border: "1px solid rgba(96,165,250,0.2)",
-              borderRadius: "10px",
-              padding: "20px 24px",
-              marginBottom: "24px",
-              fontSize: "13px",
-              color: "#94A3B8",
-              lineHeight: 1.7,
-            }}
-          >
-            <strong style={{ color: "#E2E8F0" }}>About this tracker:</strong> This dashboard monitors active
-            clinical trials and research worldwide targeting ANCA-associated vasculitis (AAV), with a focus on GPA
-            (Granulomatosis with Polyangiitis). It tracks emerging therapies including CAR-T cell treatments,
-            complement inhibitors like avacopan, next-generation B-cell depletion, steroid-sparing regimens, and
-            novel biomarker research. Trial data is curated from ClinicalTrials.gov, PubMed, and major registries.
-            The page refreshes automatically each day to reflect newly published updates.
-          </div>
-        )}
-
-        <StatsBar trials={trials} />
-
-        <SignalLegend />
-
-        {/* Filters */}
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "20px", alignItems: "center" }}>
-          <input
-            type="text"
-            placeholder="Search trials, IDs, or keywords..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              background: "rgba(15,23,42,0.6)",
-              border: "1px solid rgba(148,163,184,0.12)",
-              borderRadius: "8px",
-              padding: "10px 16px",
-              color: "#E2E8F0",
-              fontSize: "13px",
-              width: "260px",
-              outline: "none",
-            }}
-          />
-          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-            {Object.entries(CATEGORIES).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveCategory(key)}
+        {activeTab === "trials" && (
+          <>
+            {showInfo && (
+              <div
                 style={{
-                  background: activeCategory === key ? "rgba(59,130,246,0.2)" : "rgba(15,23,42,0.4)",
-                  border: `1px solid ${activeCategory === key ? "rgba(59,130,246,0.4)" : "rgba(148,163,184,0.1)"}`,
-                  color: activeCategory === key ? "#60A5FA" : "#64748B",
-                  borderRadius: "20px",
-                  padding: "6px 14px",
-                  cursor: "pointer",
-                  fontSize: "12px",
-                  fontWeight: activeCategory === key ? 600 : 400,
-                  transition: "all 0.15s",
+                  background: "rgba(30,58,95,0.3)",
+                  border: "1px solid rgba(96,165,250,0.2)",
+                  borderRadius: "10px",
+                  padding: "20px 24px",
+                  marginBottom: "24px",
+                  fontSize: "13px",
+                  color: "#94A3B8",
+                  lineHeight: 1.7,
                 }}
               >
-                {label}
-              </button>
+                <strong style={{ color: "#E2E8F0" }}>About this tracker:</strong> This dashboard monitors active
+                clinical trials and research worldwide targeting ANCA-associated vasculitis (AAV), with a focus on GPA
+                (Granulomatosis with Polyangiitis). It tracks emerging therapies including CAR-T cell treatments,
+                complement inhibitors like avacopan, next-generation B-cell depletion, steroid-sparing regimens, and
+                novel biomarker research. Trial data is curated from ClinicalTrials.gov, PubMed, and major registries.
+                The page refreshes automatically each day to reflect newly published updates.
+              </div>
+            )}
+
+            <StatsBar trials={trials} />
+
+            <SignalLegend />
+
+            {/* Filters */}
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "20px", alignItems: "center" }}>
+              <input
+                type="text"
+                placeholder="Search trials, IDs, or keywords..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  background: "rgba(15,23,42,0.6)",
+                  border: "1px solid rgba(148,163,184,0.12)",
+                  borderRadius: "8px",
+                  padding: "10px 16px",
+                  color: "#E2E8F0",
+                  fontSize: "13px",
+                  width: "260px",
+                  outline: "none",
+                }}
+              />
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {Object.entries(CATEGORIES).map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveCategory(key)}
+                    style={{
+                      background: activeCategory === key ? "rgba(59,130,246,0.2)" : "rgba(15,23,42,0.4)",
+                      border: `1px solid ${activeCategory === key ? "rgba(59,130,246,0.4)" : "rgba(148,163,184,0.1)"}`,
+                      color: activeCategory === key ? "#60A5FA" : "#64748B",
+                      borderRadius: "20px",
+                      padding: "6px 14px",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                      fontWeight: activeCategory === key ? 600 : 400,
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: "12px", fontSize: "12px", color: "#475569" }}>
+              Showing {sorted.length} of {trials.length} trials — sorted by most recent update
+            </div>
+
+            {sorted.map((trial) => (
+              <TrialCard
+                key={trial.id}
+                trial={trial}
+                isExpanded={expandedId === trial.id}
+                onToggle={() => setExpandedId(expandedId === trial.id ? null : trial.id)}
+              />
             ))}
-          </div>
-        </div>
 
-        <div style={{ marginBottom: "12px", fontSize: "12px", color: "#475569" }}>
-          Showing {sorted.length} of {trials.length} trials — sorted by most recent update
-        </div>
+            {sorted.length === 0 && (
+              <div style={{ textAlign: "center", padding: "60px 20px", color: "#475569" }}>
+                No trials match your current filters. Try adjusting your search or category.
+              </div>
+            )}
+          </>
+        )}
 
-        {sorted.map((trial) => (
-          <TrialCard
-            key={trial.id}
-            trial={trial}
-            isExpanded={expandedId === trial.id}
-            onToggle={() => setExpandedId(expandedId === trial.id ? null : trial.id)}
-          />
-        ))}
-
-        {sorted.length === 0 && (
-          <div style={{ textAlign: "center", padding: "60px 20px", color: "#475569" }}>
-            No trials match your current filters. Try adjusting your search or category.
-          </div>
+        {activeTab === "connections" && (
+          <>
+            <div style={{ marginBottom: "24px" }}>
+              <h2
+                style={{
+                  margin: "0 0 6px 0",
+                  fontSize: "18px",
+                  fontWeight: 600,
+                  color: "#E2E8F0",
+                  fontFamily: "'Source Serif 4', Georgia, serif",
+                }}
+              >
+                Disease Connections
+              </h2>
+              <p style={{ margin: 0, fontSize: "13px", color: "#64748B", lineHeight: 1.6 }}>
+                How ANCA vasculitis presents across organ systems and related conditions — with research context, symptoms, and guidance for conversations with your care team. Click any card to expand.
+              </p>
+            </div>
+            {DISEASE_CONNECTIONS.map((condition) => (
+              <ConnectionCard key={condition.id} condition={condition} />
+            ))}
+          </>
         )}
 
         <div
