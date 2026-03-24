@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 const CATEGORIES = {
   all: "All Trials",
@@ -472,80 +472,21 @@ export default function ANCATrialsDashboard() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [expandedId, setExpandedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [aiUpdate, setAiUpdate] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [lastFetch, setLastFetch] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem("anthropic_api_key") || "");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
-  const [fetchError, setFetchError] = useState(null);
 
-  const fetchLatestUpdates = useCallback(async () => {
-    if (!apiKey) {
-      setShowApiKeyInput(true);
-      return;
-    }
-    setIsLoading(true);
-    setAiUpdate(null);
-    setFetchError(null);
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-5",
-          max_tokens: 1500,
-          tools: [{ type: "web_search_20250305", name: "web_search" }],
-          messages: [
-            {
-              role: "user",
-              content:
-                'Search for the very latest ANCA vasculitis and GPA clinical trial results, new treatments, and research breakthroughs from the past 30 days. Focus on: CAR-T cell therapy for AAV, avacopan updates, rituximab studies, complement inhibitors, and any new drug approvals. Respond ONLY with a JSON object (no markdown fences) with these fields: "summary" (2-3 sentence overview), "updates" (array of objects with "title", "detail", "date", "source_url", "significance" where significance is "high"/"medium"/"low")',
-            },
-          ],
-        }),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        const msg = errData?.error?.message || `API error ${response.status}`;
-        if (response.status === 401) {
-          setFetchError("Invalid API key. Please check your Anthropic API key and try again.");
-          setShowApiKeyInput(true);
-        } else {
-          setFetchError(`Error: ${msg}`);
-        }
-        setIsLoading(false);
-        return;
+  // Refresh the page once per calendar day so any newly deployed static data is picked up.
+  useEffect(() => {
+    const STORAGE_KEY = "anca_last_daily_refresh";
+    const today = new Date().toDateString();
+    const lastRefresh = localStorage.getItem(STORAGE_KEY);
+    if (lastRefresh !== today) {
+      localStorage.setItem(STORAGE_KEY, today);
+      // Only reload if this isn't the very first visit (avoid a loop on initial load).
+      if (lastRefresh) {
+        window.location.reload();
       }
-
-      const data = await response.json();
-      // Extract text from all content blocks (may include tool_use/tool_result blocks)
-      const text = (data.content || [])
-        .filter((block) => block.type === "text")
-        .map((block) => block.text)
-        .join("\n")
-        .trim();
-
-      const clean = text.replace(/```json\n?|```/g, "").trim();
-      try {
-        const parsed = JSON.parse(clean);
-        setAiUpdate(parsed);
-      } catch {
-        setAiUpdate({ summary: text || "No text response received.", updates: [] });
-      }
-      setLastFetch(new Date().toLocaleString());
-    } catch (err) {
-      console.error("Fetch error:", err);
-      setFetchError("Network error — unable to reach the Anthropic API. Check your connection and try again.");
     }
-    setIsLoading(false);
-  }, [apiKey]);
+  }, []);
 
   const filtered = trials.filter((t) => {
     const matchCat = activeCategory === "all" || t.category === activeCategory;
@@ -612,7 +553,7 @@ export default function ANCATrialsDashboard() {
                 </h1>
               </div>
               <p style={{ margin: 0, fontSize: "13px", color: "#64748B" }}>
-                Real-time monitoring of global research toward better treatments and potential cures
+                Tracking global research toward better treatments and potential cures
               </p>
             </div>
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
@@ -630,43 +571,8 @@ export default function ANCATrialsDashboard() {
               >
                 {showInfo ? "Hide" : "ℹ Info"}
               </button>
-              <button
-                onClick={() => setShowApiKeyInput((v) => !v)}
-                title="Set Anthropic API key"
-                style={{
-                  background: apiKey ? "rgba(16,185,129,0.1)" : "rgba(148,163,184,0.08)",
-                  border: `1px solid ${apiKey ? "rgba(16,185,129,0.25)" : "rgba(148,163,184,0.12)"}`,
-                  color: apiKey ? "#34D399" : "#64748B",
-                  borderRadius: "8px",
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                }}
-              >
-                {apiKey ? "🔑" : "🔑 Set Key"}
-              </button>
-              <button
-                onClick={fetchLatestUpdates}
-                disabled={isLoading}
-                style={{
-                  background: isLoading ? "rgba(59,130,246,0.2)" : "rgba(59,130,246,0.15)",
-                  border: "1px solid rgba(59,130,246,0.3)",
-                  color: "#60A5FA",
-                  borderRadius: "8px",
-                  padding: "8px 18px",
-                  cursor: isLoading ? "not-allowed" : "pointer",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  transition: "all 0.2s",
-                }}
-              >
-                {isLoading ? "⟳ Scanning..." : "⟳ Fetch Live Updates"}
-              </button>
             </div>
           </div>
-          {lastFetch && (
-            <div style={{ fontSize: "11px", color: "#475569", marginTop: "6px" }}>Last fetched: {lastFetch}</div>
-          )}
         </div>
       </div>
 
@@ -678,98 +584,6 @@ export default function ANCATrialsDashboard() {
       `}</style>
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "28px 32px" }}>
-        {showApiKeyInput && (
-          <div
-            style={{
-              background: "rgba(15,23,42,0.8)",
-              border: "1px solid rgba(148,163,184,0.15)",
-              borderRadius: "10px",
-              padding: "20px 24px",
-              marginBottom: "16px",
-            }}
-          >
-            <div style={{ fontSize: "13px", fontWeight: 600, color: "#E2E8F0", marginBottom: "10px" }}>
-              🔑 Anthropic API Key
-            </div>
-            <div style={{ fontSize: "12px", color: "#64748B", marginBottom: "12px", lineHeight: 1.6 }}>
-              Required to fetch live AI-powered updates. Your key is stored only in your browser's localStorage and never sent anywhere except directly to the Anthropic API.
-            </div>
-            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-              <input
-                type="password"
-                placeholder="sk-ant-..."
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                style={{
-                  flex: 1,
-                  background: "rgba(15,23,42,0.6)",
-                  border: "1px solid rgba(148,163,184,0.2)",
-                  borderRadius: "8px",
-                  padding: "10px 14px",
-                  color: "#E2E8F0",
-                  fontSize: "13px",
-                  outline: "none",
-                  fontFamily: "monospace",
-                }}
-              />
-              <button
-                onClick={() => {
-                  localStorage.setItem("anthropic_api_key", apiKey);
-                  setShowApiKeyInput(false);
-                }}
-                style={{
-                  background: "rgba(59,130,246,0.2)",
-                  border: "1px solid rgba(59,130,246,0.3)",
-                  color: "#60A5FA",
-                  borderRadius: "8px",
-                  padding: "10px 18px",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                }}
-              >
-                Save
-              </button>
-              {apiKey && (
-                <button
-                  onClick={() => {
-                    setApiKey("");
-                    localStorage.removeItem("anthropic_api_key");
-                    setShowApiKeyInput(false);
-                  }}
-                  style={{
-                    background: "rgba(239,68,68,0.1)",
-                    border: "1px solid rgba(239,68,68,0.2)",
-                    color: "#F87171",
-                    borderRadius: "8px",
-                    padding: "10px 14px",
-                    cursor: "pointer",
-                    fontSize: "13px",
-                  }}
-                >
-                  Clear
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {fetchError && (
-          <div
-            style={{
-              background: "rgba(127,29,29,0.2)",
-              border: "1px solid rgba(239,68,68,0.25)",
-              borderRadius: "10px",
-              padding: "14px 20px",
-              marginBottom: "16px",
-              fontSize: "13px",
-              color: "#FCA5A5",
-            }}
-          >
-            ⚠ {fetchError}
-          </div>
-        )}
-
         {showInfo && (
           <div
             style={{
@@ -787,53 +601,8 @@ export default function ANCATrialsDashboard() {
             clinical trials and research worldwide targeting ANCA-associated vasculitis (AAV), with a focus on GPA
             (Granulomatosis with Polyangiitis). It tracks emerging therapies including CAR-T cell treatments,
             complement inhibitors like avacopan, next-generation B-cell depletion, steroid-sparing regimens, and
-            novel biomarker research. Press "Fetch Live Updates" to use AI-powered web search for the latest
-            published results.
-          </div>
-        )}
-
-        {aiUpdate && (
-          <div
-            style={{
-              background: "linear-gradient(135deg, rgba(16,185,129,0.08), rgba(59,130,246,0.08))",
-              border: "1px solid rgba(52,211,153,0.2)",
-              borderRadius: "10px",
-              padding: "20px 24px",
-              marginBottom: "24px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
-              <span style={{ fontSize: "14px" }}>🔬</span>
-              <span style={{ fontSize: "13px", fontWeight: 700, color: "#6EE7B7", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                AI-Powered Live Update
-              </span>
-            </div>
-            <p style={{ margin: "0 0 12px 0", color: "#CBD5E1", fontSize: "14px", lineHeight: 1.7 }}>
-              {aiUpdate.summary}
-            </p>
-            {aiUpdate.updates && aiUpdate.updates.length > 0 && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                {aiUpdate.updates.map((u, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      background: "rgba(15,23,42,0.5)",
-                      borderRadius: "6px",
-                      padding: "12px 16px",
-                      borderLeft: `3px solid ${u.significance === "high" ? "#10B981" : u.significance === "medium" ? "#F59E0B" : "#6B7280"}`,
-                    }}
-                  >
-                    <div style={{ fontWeight: 600, fontSize: "13px", color: "#E2E8F0", marginBottom: "4px" }}>
-                      {u.title}
-                    </div>
-                    <div style={{ fontSize: "12px", color: "#94A3B8", lineHeight: 1.6 }}>{u.detail}</div>
-                    {u.date && (
-                      <div style={{ fontSize: "11px", color: "#475569", marginTop: "4px" }}>{u.date}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+            novel biomarker research. Trial data is curated from ClinicalTrials.gov, PubMed, and major registries.
+            The page refreshes automatically each day to reflect newly published updates.
           </div>
         )}
 
@@ -915,7 +684,7 @@ export default function ANCATrialsDashboard() {
           <div>Data sources: ClinicalTrials.gov · PubMed · Nature Reviews Rheumatology · Frontiers in Immunology</div>
           <div>Registries: VCRC (Vasculitis Clinical Research Consortium) · EUVAS (European Vasculitis Society) · ERA-EDTA Registry</div>
           <div>Evidence: Cochrane Systematic Reviews · FDA Drug Trials Snapshots · EMA EPAR Database</div>
-          <div>AI updates powered by Claude with live web search · Not medical advice — consult your physician</div>
+          <div>Not medical advice — consult your physician</div>
         </div>
       </div>
     </div>
