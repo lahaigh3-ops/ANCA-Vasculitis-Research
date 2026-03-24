@@ -349,6 +349,176 @@ const DISEASE_CONNECTIONS = [
   },
 ];
 
+const RESEARCH_CENTERS = [
+  // ── Frontier: running the most novel, earliest-phase research ──────────────
+  {
+    id: "upenn",
+    tier: "frontier",
+    name: "University of Pennsylvania — Penn Vasculitis Program",
+    city: "Philadelphia, Pennsylvania",
+    country: "United States",
+    focus: ["CAR-T cell therapy", "Refractory AAV", "Novel immunology"],
+    whyItMatters:
+      "One of the primary US access points for CAR-T cell therapy trials in ANCA vasculitis. For patients who have relapsed on rituximab or cyclophosphamide and have run out of standard options, Penn's trial infrastructure offers the earliest access to experimental immune-reset approaches. Deep bench in translational immunology accelerates bench-to-bedside translation.",
+    landmark: "CAR-T trials for refractory AAV (NCT06375993 site); dual-target CD19/BCMA programs",
+    network: ["VCRC"],
+    url: null,
+  },
+  {
+    id: "freiburg",
+    tier: "frontier",
+    name: "University Hospital Freiburg — Hematology & Oncology / Autoimmune",
+    city: "Freiburg im Breisgau",
+    country: "Germany",
+    focus: ["CAR-T cell therapy", "Immune reset", "Refractory autoimmune disease"],
+    whyItMatters:
+      "Published the landmark early case series demonstrating CD19-targeted CAR-T cells achieving drug-free remission in refractory ANCA vasculitis — work that defined the rationale for every subsequent CAR-T trial in AAV. The foremost European destination for patients with truly refractory disease seeking experimental immune-reset therapy.",
+    landmark: "Pioneering CAR-T 'immune reset' case series in GPA/MPA; NCT06590545 contributing site",
+    network: ["EUVAS"],
+    url: null,
+  },
+  {
+    id: "jhmi",
+    tier: "frontier",
+    name: "Johns Hopkins Vasculitis Center",
+    city: "Baltimore, Maryland",
+    country: "United States",
+    focus: ["Rituximab optimization", "Biomarker-guided dosing", "Refractory GPA", "Phase 2–3 trials"],
+    whyItMatters:
+      "Led the RAVE trial that transformed ANCA vasculitis care by establishing rituximab as first-line therapy. Hopkins remains one of the most active recruiting sites in the country, with strong pathways into current Phase 2 and Phase 3 trials. The vasculitis team spans rheumatology, nephrology, pulmonology, and ENT, making it well-suited for complex multi-organ disease.",
+    landmark: "RAVE trial — established rituximab as first-line standard of care for GPA/MPA",
+    network: ["VCRC"],
+    url: "https://www.hopkinsvasculitis.org",
+  },
+  // ── Major Programs: established high-volume centers running Phase 2–3 work ──
+  {
+    id: "cleveland",
+    tier: "major",
+    name: "Cleveland Clinic — Center for Vasculitis Care and Research",
+    city: "Cleveland, Ohio",
+    country: "United States",
+    focus: ["GPA / MPA / EGPA", "Multidisciplinary care", "Phase 2–3 trial recruitment"],
+    whyItMatters:
+      "One of the largest dedicated vasculitis programs in North America. The integrated team — rheumatology, nephrology, pulmonology, ENT, ophthalmology — manages complex multi-organ disease under one roof. Consistently among the top-enrolling sites in VCRC-coordinated national trials, meaning access to studies before they reach community practices.",
+    landmark: "High-volume VCRC trial site; national referral center for rare GPA presentations",
+    network: ["VCRC"],
+    url: "https://my.clevelandclinic.org/departments/rheumatology-immunology/vasculitis",
+  },
+  {
+    id: "mayo",
+    tier: "major",
+    name: "Mayo Clinic — Vasculitis Clinic",
+    city: "Rochester, Minnesota",
+    country: "United States",
+    focus: ["Rare manifestations", "Pachymeningitis", "Orbital GPA", "Diagnostic workup"],
+    whyItMatters:
+      "The go-to center for diagnostically difficult and rare manifestations of AAV — particularly hypertrophic pachymeningitis, orbital granuloma, and subglottic stenosis. Mayo's integrated model concentrates specialists from neurology, ophthalmology, ENT, and rheumatology who have seen more rare GPA presentations than most centers see in a career. Frequently sought for second opinions on atypical cases.",
+    landmark: "Largest institutional experience with neurological AAV manifestations including pachymeningitis",
+    network: ["VCRC"],
+    url: "https://www.mayoclinic.org",
+  },
+  {
+    id: "cambridge",
+    tier: "major",
+    name: "Cambridge University Hospitals — Vasculitis & Lupus Clinic",
+    city: "Cambridge",
+    country: "United Kingdom",
+    focus: ["Rituximab maintenance", "ANCA pathophysiology", "Renal vasculitis", "Long-term outcomes"],
+    whyItMatters:
+      "Led the RITAZAREM trial establishing rituximab maintenance as superior to azathioprine for relapse prevention — a result that directly changed international guidelines. Cambridge is a global training hub for vasculitis specialists and a primary node in the EUVAS European trial network, giving patients access to UK and EU trials simultaneously.",
+    landmark: "RITAZAREM trial — rituximab maintenance vs azathioprine, redefined relapse prevention",
+    network: ["EUVAS"],
+    url: null,
+  },
+  {
+    id: "gfev",
+    tier: "major",
+    name: "French Vasculitis Study Group (GFEV)",
+    city: "Paris · Bordeaux · Tours · Lille",
+    country: "France",
+    focus: ["EGPA", "Mepolizumab / anti-IL-5", "Remission induction", "Eosinophilic disease"],
+    whyItMatters:
+      "The world's leading network for EGPA research and home to the MIRRA trial that established mepolizumab as a steroid-sparing standard. The ongoing E-merge trial (NCT05030155) tests whether mepolizumab can induce full remission. GFEV also maintains one of the largest EGPA patient registries globally. For patients with EGPA or suspected EGPA, no network has deeper expertise.",
+    landmark: "MIRRA trial (established mepolizumab in EGPA); E-merge trial NCT05030155",
+    network: ["EUVAS"],
+    url: null,
+  },
+  {
+    id: "leiden",
+    tier: "major",
+    name: "Leiden University Medical Center",
+    city: "Leiden",
+    country: "Netherlands",
+    focus: ["Complement biology", "Renal AAV", "ANCA pathogenesis", "Avacopan mechanism"],
+    whyItMatters:
+      "The foundational complement biology research that directly enabled the development of avacopan (now FDA-approved) came out of Leiden and collaborating EUVAS centers. Strong clinical renal vasculitis program with long-term follow-up data. Access to pan-European EUVAS trial infrastructure alongside in-depth renal monitoring.",
+    landmark: "Complement pathway research underpinning avacopan; long-term renal outcomes registry",
+    network: ["EUVAS"],
+    url: null,
+  },
+  {
+    id: "toronto",
+    tier: "major",
+    name: "Toronto General Hospital — University Health Network",
+    city: "Toronto, Ontario",
+    country: "Canada",
+    focus: ["Rituximab biosimilars", "GPA / MPA outcomes", "Nephrology co-management"],
+    whyItMatters:
+      "Canada's primary vasculitis referral center and the sponsor of the BRAVO trial comparing rituximab biosimilars against the originator — research with direct implications for patient access and treatment affordability. Joint nephrology-rheumatology management model is well-suited to patients with significant kidney involvement.",
+    landmark: "BRAVO trial NCT05716334 — rituximab biosimilar vs originator in GPA/MPA",
+    network: [],
+    url: null,
+  },
+  // ── Research Networks: coordinating bodies patients should know about ───────
+  {
+    id: "vcrc",
+    tier: "network",
+    name: "Vasculitis Clinical Research Consortium (VCRC)",
+    city: "Multi-center — US & Canada",
+    country: "United States / Canada",
+    focus: ["Trial coordination", "Patient registry", "Outcome standards", "Natural history studies"],
+    whyItMatters:
+      "The NIH-funded backbone of ANCA vasculitis research in North America. VCRC coordinates multicenter trials across 10+ sites, maintains the largest North American patient registry, and develops the standardized outcome measures used by researchers worldwide. Patients can join the VCRC Patient Contact Registry to be notified when they may be eligible for new trials — regardless of where they currently receive care.",
+    landmark: "Coordinates RAVE follow-up, RITAZAREM US sites, biomarker programs; hosts the Patient Contact Registry",
+    network: [],
+    url: "https://www.rarediseasesnetwork.org/vcrc",
+  },
+  // ── Regional Leaders: important outside the main US/UK/NL cluster ──────────
+  {
+    id: "groningen",
+    tier: "regional",
+    name: "UMCG — University of Groningen Vasculitis Center",
+    city: "Groningen",
+    country: "Netherlands",
+    focus: ["ANCA pathogenesis", "Biomarker discovery", "Renal outcomes", "European registry"],
+    whyItMatters:
+      "One of Europe's most productive ANCA research centers, with decades of foundational work on how ANCA antibodies cause vessel wall damage. Active participation in EUVAS multinational studies and a strong clinical renal program. Important for patients in Northern Europe seeking specialist vasculitis care.",
+    landmark: "Foundational ANCA neutrophil-activation pathogenesis research; EUVAS registry node",
+    network: ["EUVAS"],
+    url: null,
+  },
+  {
+    id: "pkuph",
+    tier: "regional",
+    name: "Peking Union Medical College Hospital (PUMCH)",
+    city: "Beijing",
+    country: "China",
+    focus: ["CAR-T therapy", "MPO-ANCA disease", "Large-scale cohorts", "Asian epidemiology"],
+    whyItMatters:
+      "Among the highest-volume ANCA vasculitis centers in the world, with a predominantly MPO-ANCA cohort reflecting the East Asian epidemiological pattern. Actively recruiting for CAR-T trials (NCT06590545) and contributing large-scale outcomes data that complement smaller Western cohorts. The leading destination for patients in China seeking advanced vasculitis care.",
+    landmark: "NCT06590545 site (anti-CD19 CAR-T); Chinese Vasculitis Research Registry",
+    network: [],
+    url: null,
+  },
+];
+
+const TIER_CONFIG = {
+  frontier: { label: "Frontier Research", color: "#F59E0B", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.25)" },
+  major:    { label: "Major Program",     color: "#60A5FA", bg: "rgba(59,130,246,0.1)",  border: "rgba(59,130,246,0.25)"  },
+  network:  { label: "Research Network",  color: "#A78BFA", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.25)"  },
+  regional: { label: "Regional Leader",   color: "#34D399", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.25)"  },
+};
+
 function SignalBadge({ signal }) {
   const config = {
     positive: { bg: "#065F46", text: "#6EE7B7", label: "Positive Signal" },
@@ -746,6 +916,124 @@ function ConnectionCard({ condition }) {
   );
 }
 
+function CenterCard({ center }) {
+  const tier = TIER_CONFIG[center.tier];
+
+  return (
+    <div
+      style={{
+        background: "rgba(15,23,42,0.7)",
+        border: "1px solid rgba(148,163,184,0.12)",
+        borderLeft: `3px solid ${tier.color}`,
+        borderRadius: "8px",
+        padding: "20px 24px",
+        backdropFilter: "blur(8px)",
+      }}
+    >
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", marginBottom: "12px" }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "6px" }}>
+            <span
+              style={{
+                background: tier.bg,
+                color: tier.color,
+                border: `1px solid ${tier.border}`,
+                padding: "2px 10px",
+                borderRadius: "12px",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.6px",
+                textTransform: "uppercase",
+              }}
+            >
+              {tier.label}
+            </span>
+            {center.network.map((n) => (
+              <span
+                key={n}
+                style={{
+                  background: "rgba(148,163,184,0.08)",
+                  color: "#64748B",
+                  padding: "2px 8px",
+                  borderRadius: "12px",
+                  fontSize: "10px",
+                  fontWeight: 600,
+                  letterSpacing: "0.4px",
+                }}
+              >
+                {n}
+              </span>
+            ))}
+          </div>
+          <h3
+            style={{
+              margin: "0 0 3px 0",
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#E2E8F0",
+              lineHeight: 1.4,
+              fontFamily: "'Source Serif 4', Georgia, serif",
+            }}
+          >
+            {center.name}
+          </h3>
+          <div style={{ fontSize: "12px", color: "#64748B" }}>
+            {center.city} · {center.country}
+          </div>
+        </div>
+        {center.url && (
+          <a
+            href={center.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#60A5FA", fontSize: "12px", textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}
+          >
+            Website →
+          </a>
+        )}
+      </div>
+
+      {/* Why it matters */}
+      <p style={{ margin: "0 0 14px 0", color: "#CBD5E1", fontSize: "13px", lineHeight: 1.75 }}>
+        {center.whyItMatters}
+      </p>
+
+      {/* Landmark + focus row */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "flex-start" }}>
+        <div style={{ flex: "1 1 240px" }}>
+          <div style={{ fontSize: "10px", fontWeight: 700, color: "#475569", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "4px" }}>
+            Notable Contribution
+          </div>
+          <div style={{ fontSize: "12px", color: "#94A3B8", lineHeight: 1.6 }}>{center.landmark}</div>
+        </div>
+        <div style={{ flex: "1 1 200px" }}>
+          <div style={{ fontSize: "10px", fontWeight: 700, color: "#475569", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "6px" }}>
+            Focus Areas
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+            {center.focus.map((f) => (
+              <span
+                key={f}
+                style={{
+                  background: "rgba(15,23,42,0.6)",
+                  border: "1px solid rgba(148,163,184,0.1)",
+                  color: "#94A3B8",
+                  padding: "2px 8px",
+                  borderRadius: "4px",
+                  fontSize: "11px",
+                }}
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ANCATrialsDashboard() {
   const [trials] = useState(SEED_TRIALS);
   const [activeTab, setActiveTab] = useState("trials");
@@ -858,7 +1146,7 @@ export default function ANCATrialsDashboard() {
 
           {/* Tab navigation */}
           <div style={{ display: "flex", gap: "0", marginTop: "20px", borderBottom: "1px solid rgba(148,163,184,0.08)" }}>
-            {[["trials", "Clinical Trials"], ["connections", "Disease Connections"]].map(([key, label]) => (
+            {[["trials", "Clinical Trials"], ["connections", "Disease Connections"], ["centers", "Research & Centers"]].map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
@@ -1001,6 +1289,110 @@ export default function ANCATrialsDashboard() {
             {DISEASE_CONNECTIONS.map((condition) => (
               <ConnectionCard key={condition.id} condition={condition} />
             ))}
+          </>
+        )}
+
+        {activeTab === "centers" && (
+          <>
+            {/* Page intro */}
+            <div style={{ marginBottom: "28px" }}>
+              <h2
+                style={{
+                  margin: "0 0 6px 0",
+                  fontSize: "18px",
+                  fontWeight: 600,
+                  color: "#E2E8F0",
+                  fontFamily: "'Source Serif 4', Georgia, serif",
+                }}
+              >
+                Research &amp; Centers
+              </h2>
+              <p style={{ margin: "0 0 16px 0", fontSize: "13px", color: "#64748B", lineHeight: 1.6 }}>
+                Where the most advanced ANCA vasculitis research is happening — and what it means for patients seeking cutting-edge care or trial access. Centers are grouped by the sophistication and novelty of their active research programs.
+              </p>
+              <div
+                style={{
+                  background: "rgba(30,58,95,0.25)",
+                  border: "1px solid rgba(96,165,250,0.15)",
+                  borderRadius: "8px",
+                  padding: "14px 18px",
+                  fontSize: "12px",
+                  color: "#94A3B8",
+                  lineHeight: 1.7,
+                }}
+              >
+                <strong style={{ color: "#CBD5E1" }}>Seeking care at a major center?</strong> Ask your current physician for a referral, or contact the center's vasculitis program directly. Many accept out-of-area patients for consultation or second opinions. The{" "}
+                <span style={{ color: "#60A5FA" }}>VCRC Patient Contact Registry</span> (below) lets you register to be notified of trials you may qualify for, regardless of where you currently receive care.
+              </div>
+            </div>
+
+            {/* Tier legend */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "28px" }}>
+              {Object.entries(TIER_CONFIG).map(([key, t]) => (
+                <div key={key} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span
+                    style={{
+                      background: t.bg,
+                      color: t.color,
+                      border: `1px solid ${t.border}`,
+                      padding: "2px 10px",
+                      borderRadius: "12px",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      letterSpacing: "0.6px",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {t.label}
+                  </span>
+                </div>
+              ))}
+              <span style={{ fontSize: "12px", color: "#475569", alignSelf: "center" }}>
+                — ranked by novelty and patient access to cutting-edge trials
+              </span>
+            </div>
+
+            {/* Frontier section */}
+            <div style={{ marginBottom: "8px" }}>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#F59E0B", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ flex: 1, height: "1px", background: "rgba(245,158,11,0.2)", display: "block" }} />
+                Frontier Research
+                <span style={{ flex: 1, height: "1px", background: "rgba(245,158,11,0.2)", display: "block" }} />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
+                {RESEARCH_CENTERS.filter((c) => c.tier === "frontier").map((c) => (
+                  <CenterCard key={c.id} center={c} />
+                ))}
+              </div>
+            </div>
+
+            {/* Major Programs section */}
+            <div style={{ marginBottom: "8px" }}>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#60A5FA", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ flex: 1, height: "1px", background: "rgba(59,130,246,0.2)", display: "block" }} />
+                Major Programs &amp; Networks
+                <span style={{ flex: 1, height: "1px", background: "rgba(59,130,246,0.2)", display: "block" }} />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
+                {RESEARCH_CENTERS.filter((c) => c.tier === "major" || c.tier === "network").map((c) => (
+                  <CenterCard key={c.id} center={c} />
+                ))}
+              </div>
+            </div>
+
+            {/* Regional Leaders section */}
+            <div>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#34D399", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ flex: 1, height: "1px", background: "rgba(16,185,129,0.2)", display: "block" }} />
+                Regional Leaders
+                <span style={{ flex: 1, height: "1px", background: "rgba(16,185,129,0.2)", display: "block" }} />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {RESEARCH_CENTERS.filter((c) => c.tier === "regional").map((c) => (
+                  <CenterCard key={c.id} center={c} />
+                ))}
+              </div>
+            </div>
           </>
         )}
 
