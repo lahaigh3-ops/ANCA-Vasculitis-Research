@@ -476,17 +476,30 @@ export default function ANCATrialsDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [lastFetch, setLastFetch] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem("anthropic_api_key") || "");
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
   const fetchLatestUpdates = useCallback(async () => {
+    if (!apiKey) {
+      setShowApiKeyInput(true);
+      return;
+    }
     setIsLoading(true);
     setAiUpdate(null);
+    setFetchError(null);
     try {
       const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+        },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
+          model: "claude-sonnet-4-5",
+          max_tokens: 1500,
           tools: [{ type: "web_search_20250305", name: "web_search" }],
           messages: [
             {
@@ -497,22 +510,42 @@ export default function ANCATrialsDashboard() {
           ],
         }),
       });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        const msg = errData?.error?.message || `API error ${response.status}`;
+        if (response.status === 401) {
+          setFetchError("Invalid API key. Please check your Anthropic API key and try again.");
+          setShowApiKeyInput(true);
+        } else {
+          setFetchError(`Error: ${msg}`);
+        }
+        setIsLoading(false);
+        return;
+      }
+
       const data = await response.json();
-      const text = data.content.map((i) => i.text || "").filter(Boolean).join("\n");
-      const clean = text.replace(/```json|```/g, "").trim();
+      // Extract text from all content blocks (may include tool_use/tool_result blocks)
+      const text = (data.content || [])
+        .filter((block) => block.type === "text")
+        .map((block) => block.text)
+        .join("\n")
+        .trim();
+
+      const clean = text.replace(/```json\n?|```/g, "").trim();
       try {
         const parsed = JSON.parse(clean);
         setAiUpdate(parsed);
       } catch {
-        setAiUpdate({ summary: text, updates: [] });
+        setAiUpdate({ summary: text || "No text response received.", updates: [] });
       }
       setLastFetch(new Date().toLocaleString());
     } catch (err) {
       console.error("Fetch error:", err);
-      setAiUpdate({ summary: "Unable to fetch live updates. Showing cached trial data.", updates: [] });
+      setFetchError("Network error — unable to reach the Anthropic API. Check your connection and try again.");
     }
     setIsLoading(false);
-  }, []);
+  }, [apiKey]);
 
   const filtered = trials.filter((t) => {
     const matchCat = activeCategory === "all" || t.category === activeCategory;
@@ -598,6 +631,21 @@ export default function ANCATrialsDashboard() {
                 {showInfo ? "Hide" : "ℹ Info"}
               </button>
               <button
+                onClick={() => setShowApiKeyInput((v) => !v)}
+                title="Set Anthropic API key"
+                style={{
+                  background: apiKey ? "rgba(16,185,129,0.1)" : "rgba(148,163,184,0.08)",
+                  border: `1px solid ${apiKey ? "rgba(16,185,129,0.25)" : "rgba(148,163,184,0.12)"}`,
+                  color: apiKey ? "#34D399" : "#64748B",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                }}
+              >
+                {apiKey ? "🔑" : "🔑 Set Key"}
+              </button>
+              <button
                 onClick={fetchLatestUpdates}
                 disabled={isLoading}
                 style={{
@@ -630,6 +678,98 @@ export default function ANCATrialsDashboard() {
       `}</style>
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "28px 32px" }}>
+        {showApiKeyInput && (
+          <div
+            style={{
+              background: "rgba(15,23,42,0.8)",
+              border: "1px solid rgba(148,163,184,0.15)",
+              borderRadius: "10px",
+              padding: "20px 24px",
+              marginBottom: "16px",
+            }}
+          >
+            <div style={{ fontSize: "13px", fontWeight: 600, color: "#E2E8F0", marginBottom: "10px" }}>
+              🔑 Anthropic API Key
+            </div>
+            <div style={{ fontSize: "12px", color: "#64748B", marginBottom: "12px", lineHeight: 1.6 }}>
+              Required to fetch live AI-powered updates. Your key is stored only in your browser's localStorage and never sent anywhere except directly to the Anthropic API.
+            </div>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input
+                type="password"
+                placeholder="sk-ant-..."
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                style={{
+                  flex: 1,
+                  background: "rgba(15,23,42,0.6)",
+                  border: "1px solid rgba(148,163,184,0.2)",
+                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  color: "#E2E8F0",
+                  fontSize: "13px",
+                  outline: "none",
+                  fontFamily: "monospace",
+                }}
+              />
+              <button
+                onClick={() => {
+                  localStorage.setItem("anthropic_api_key", apiKey);
+                  setShowApiKeyInput(false);
+                }}
+                style={{
+                  background: "rgba(59,130,246,0.2)",
+                  border: "1px solid rgba(59,130,246,0.3)",
+                  color: "#60A5FA",
+                  borderRadius: "8px",
+                  padding: "10px 18px",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                }}
+              >
+                Save
+              </button>
+              {apiKey && (
+                <button
+                  onClick={() => {
+                    setApiKey("");
+                    localStorage.removeItem("anthropic_api_key");
+                    setShowApiKeyInput(false);
+                  }}
+                  style={{
+                    background: "rgba(239,68,68,0.1)",
+                    border: "1px solid rgba(239,68,68,0.2)",
+                    color: "#F87171",
+                    borderRadius: "8px",
+                    padding: "10px 14px",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                  }}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {fetchError && (
+          <div
+            style={{
+              background: "rgba(127,29,29,0.2)",
+              border: "1px solid rgba(239,68,68,0.25)",
+              borderRadius: "10px",
+              padding: "14px 20px",
+              marginBottom: "16px",
+              fontSize: "13px",
+              color: "#FCA5A5",
+            }}
+          >
+            ⚠ {fetchError}
+          </div>
+        )}
+
         {showInfo && (
           <div
             style={{
