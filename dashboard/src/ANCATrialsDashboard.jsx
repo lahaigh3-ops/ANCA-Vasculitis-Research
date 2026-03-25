@@ -10,6 +10,14 @@ const CATEGORIES = {
   other: "Other Novel Agents",
 };
 
+const CONDITIONS = {
+  all: "All Conditions",
+  gpa: "GPA",
+  mpa: "MPA",
+  egpa: "EGPA",
+  anca_gn: "ANCA-GN",
+};
+
 const PHASE_COLORS = {
   "Phase 1": "#F59E0B",
   "Phase 1/2": "#F97316",
@@ -37,6 +45,7 @@ const SEED_TRIALS = [
     phase: "Phase 1",
     status: "Recruiting",
     category: "car_t",
+    conditions: ["GPA", "MPA"],
     description:
       "First gamma-delta CAR T-cell therapy trial to enroll AAV patients. Over 20 patients dosed as of Dec 2025. Prula-cel targets CD20 using allogeneic gamma-delta T cells, aiming for an immune system 'reset' without the manufacturing delays of autologous approaches.",
     locations: "United States (2 sites)",
@@ -52,6 +61,7 @@ const SEED_TRIALS = [
     phase: "Phase 1/2",
     status: "Recruiting",
     category: "car_t",
+    conditions: ["GPA", "MPA"],
     description:
       "Evaluating CD19-targeting CAR-T cells for refractory AAV. Early case reports show robust B-cell and plasmablast depletion, significant decline in MPO-ANCA levels, and protection from kidney damage in preclinical models. Goal: drug-free remission.",
     locations: "Europe, Asia",
@@ -67,6 +77,7 @@ const SEED_TRIALS = [
     phase: "Phase 1",
     status: "Not yet recruiting",
     category: "car_t",
+    conditions: ["GPA", "MPA"],
     description:
       "Dual-targeting approach using universal allogeneic CAR-T cells against both CD19 and BCMA. Aims to deplete both B cells and long-lived plasma cells that produce ANCA autoantibodies. Primary completion expected May 2027.",
     locations: "Multiple countries",
@@ -82,6 +93,7 @@ const SEED_TRIALS = [
     phase: "Phase 3",
     status: "Active",
     category: "complement",
+    conditions: ["GPA", "MPA", "ANCA-GN"],
     description:
       "Long-term follow-up of the ADVOCATE trial. Avacopan (oral C5a receptor antagonist) demonstrated superior sustained remission vs prednisone taper at 52 weeks, with potentially greater kidney recovery. FDA-approved 2021 for severe AAV. Extension data continue to show durable benefit with reduced steroid exposure.",
     locations: "Global (20+ countries)",
@@ -97,6 +109,7 @@ const SEED_TRIALS = [
     phase: "Observational",
     status: "Recruiting",
     category: "b_cell",
+    conditions: ["GPA", "MPA"],
     description:
       "Multicenter study comparing rituximab biosimilars with the originator product in 240 GPA/MPA patients for safety and effectiveness. Results will inform whether cheaper biosimilars can be used interchangeably.",
     locations: "Canada",
@@ -112,6 +125,7 @@ const SEED_TRIALS = [
     phase: "Phase 4",
     status: "Active",
     category: "other",
+    conditions: ["GPA", "MPA"],
     description:
       "Testing whether hydroxychloroquine can reduce disease activity when added to standard AAV treatment. Double-blind, placebo-controlled trial in the UK with 43 participants.",
     locations: "United Kingdom",
@@ -127,6 +141,7 @@ const SEED_TRIALS = [
     phase: "Phase 1/2",
     status: "Recruiting",
     category: "other",
+    conditions: ["GPA", "MPA", "ANCA-GN"],
     description:
       "Prospective single-arm study in 15 patients with GPA or MPA and ANCA-associated nephritis. Testing a new therapeutic approach for kidney-specific disease manifestation.",
     locations: "Multiple sites",
@@ -142,6 +157,7 @@ const SEED_TRIALS = [
     phase: "Phase 3",
     status: "Completed",
     category: "b_cell",
+    conditions: ["GPA", "MPA"],
     description:
       "Landmark trial establishing rituximab maintenance as superior to azathioprine for relapse prevention. Extended follow-up data support prolonged rituximab maintenance in relapsing AAV, with ongoing analysis of optimal duration and biomarker-guided dosing.",
     locations: "Global",
@@ -157,6 +173,7 @@ const SEED_TRIALS = [
     phase: "Observational",
     status: "Active",
     category: "biomarker",
+    conditions: ["GPA", "MPA", "EGPA"],
     description:
       "Research identifying MMP-3, CXCL13, and TIMP-1 as highly accurate markers for distinguishing active disease from remission (AUC 0.83-0.89). IL-8, IL-15, and IL-18BP emerged as promising flare predictors independent of ANCA type or treatment.",
     locations: "Global",
@@ -172,6 +189,7 @@ const SEED_TRIALS = [
     phase: "Phase 2",
     status: "Recruiting",
     category: "b_cell",
+    conditions: ["GPA", "MPA"],
     description:
       "Multiple trials evaluating obinutuzumab and other next-generation anti-CD20 antibodies that may achieve deeper B-cell depletion than rituximab, potentially leading to more durable remissions and fewer relapses in GPA/MPA.",
     locations: "US, Europe",
@@ -187,6 +205,7 @@ const SEED_TRIALS = [
     phase: "Phase 3",
     status: "Active",
     category: "other",
+    conditions: ["EGPA"],
     description:
       "Comparing mepolizumab (anti-IL-5) regimen vs conventional therapy for inducing remission in EGPA. 100 patients enrolled in France regardless of ANCA status.",
     locations: "France",
@@ -202,6 +221,7 @@ const SEED_TRIALS = [
     phase: "Phase 1",
     status: "Recruiting",
     category: "other",
+    conditions: ["GPA", "MPA", "ANCA-GN"],
     description:
       "Emerging trials targeting fibrosis pathways in AAV, aiming to prevent irreversible kidney and lung damage. Novel complement inhibitors and anti-fibrotic molecules are under investigation alongside standard immunosuppression.",
     locations: "US, Europe, Asia",
@@ -209,6 +229,138 @@ const SEED_TRIALS = [
     updated: "2025-07-01",
     outcome_signal: "neutral",
     url: "https://clinicaltrials.gov",
+  },
+  // ── GPA-specific ──────────────────────────────────────────────────────────
+  {
+    id: "NCT01920191",
+    title: "TAPIR — Trimethoprim-Sulfamethoxazole for Remission Maintenance in GPA",
+    sponsor: "US Vasculitis Clinical Research Consortium",
+    phase: "Phase 3",
+    status: "Completed",
+    category: "steroid_sparing",
+    conditions: ["GPA"],
+    description:
+      "Randomized, double-blind trial comparing low-dose TMP-SMX (cotrimoxazole) vs placebo as a maintenance agent in 56 patients with GPA in remission. Results showed a trend toward fewer relapses with TMP-SMX, supporting the long-standing clinical practice of using this antibiotic adjunctively to reduce Staphylococcus aureus colonization, which is thought to trigger GPA flares.",
+    locations: "United States",
+    enrollment: 56,
+    updated: "2024-03-01",
+    outcome_signal: "promising",
+    url: "https://clinicaltrials.gov/study/NCT01920191",
+  },
+  {
+    id: "GPA-ORBITAL-GRANULOMA",
+    title: "Rituximab vs Cyclophosphamide for Orbital Granuloma in GPA",
+    sponsor: "Multiple Academic Centers",
+    phase: "Observational",
+    status: "Active",
+    category: "b_cell",
+    conditions: ["GPA"],
+    description:
+      "Registry and cohort studies comparing outcomes of rituximab versus cyclophosphamide for refractory orbital granuloma — one of the most challenging GPA manifestations. Orbital granulomas are relatively resistant to standard therapy and can cause permanent vision loss. Data from registry cohorts suggest rituximab may achieve better orbital responses than cyclophosphamide in this difficult-to-treat manifestation.",
+    locations: "US, Europe",
+    enrollment: 80,
+    updated: "2025-06-01",
+    outcome_signal: "promising",
+    url: "https://clinicaltrials.gov",
+  },
+  // ── MPA-specific ──────────────────────────────────────────────────────────
+  {
+    id: "MPA-PULM-FIBROSIS",
+    title: "Nintedanib for MPA-Associated Interstitial Lung Disease",
+    sponsor: "Academic Collaborations (Asia, Europe)",
+    phase: "Phase 2",
+    status: "Recruiting",
+    category: "other",
+    conditions: ["MPA"],
+    description:
+      "Investigates whether nintedanib (anti-fibrotic licensed for IPF and systemic sclerosis-ILD) can slow or halt pulmonary fibrosis that develops in MPA patients even during clinical remission. MPA-associated ILD is progressive and is a major cause of disability and death independent of active vasculitis; current immunosuppression alone does not prevent it. Preliminary case series suggest nintedanib may be beneficial alongside standard therapy.",
+    locations: "Asia, Europe",
+    enrollment: 45,
+    updated: "2025-09-01",
+    outcome_signal: "neutral",
+    url: "https://clinicaltrials.gov",
+  },
+  // ── EGPA-specific ─────────────────────────────────────────────────────────
+  {
+    id: "NCT04157348",
+    title: "MANDARA — Benralizumab vs Mepolizumab for Remission Maintenance in EGPA",
+    sponsor: "AstraZeneca",
+    phase: "Phase 3",
+    status: "Completed",
+    category: "steroid_sparing",
+    conditions: ["EGPA"],
+    description:
+      "Landmark head-to-head trial in 140 EGPA patients comparing benralizumab (anti-IL-5Rα) vs mepolizumab (anti-IL-5) for remission maintenance. Benralizumab demonstrated non-inferiority to mepolizumab in achieving remission at week 36. Both drugs markedly reduced relapses and allowed steroid tapering. Published in NEJM 2024. Results position benralizumab as an alternative to mepolizumab, expanding options for EGPA patients — particularly those with heavy eosinophil burden.",
+    locations: "Global (20+ countries)",
+    enrollment: 140,
+    updated: "2024-08-01",
+    outcome_signal: "positive",
+    url: "https://clinicaltrials.gov/study/NCT04157348",
+  },
+  {
+    id: "EGPA-DUPILUMAB",
+    title: "Dupilumab as Steroid-Sparing Therapy in EGPA",
+    sponsor: "Sanofi / Regeneron",
+    phase: "Phase 2/3",
+    status: "Recruiting",
+    category: "steroid_sparing",
+    conditions: ["EGPA"],
+    description:
+      "Investigating dupilumab (IL-4/IL-13 receptor blocker, approved for severe asthma and atopic dermatitis) in EGPA. Given EGPA's Th2-driven eosinophilic pathology, blocking IL-4 and IL-13 signaling is a mechanistically compelling approach. Early case reports show meaningful steroid-sparing effects. This trial will provide the first controlled evidence for dupilumab's role in reducing EGPA relapses and steroid dependence.",
+    locations: "United States, Europe",
+    enrollment: 50,
+    updated: "2025-10-01",
+    outcome_signal: "neutral",
+    url: "https://clinicaltrials.gov",
+  },
+  // ── ANCA-Associated Glomerulonephritis-specific ───────────────────────────
+  {
+    id: "NCT00987389",
+    title: "PEXIVAS — Plasma Exchange in Severe ANCA-Associated Vasculitis with Renal Involvement",
+    sponsor: "Vasculitis Clinical Research Consortium / EUVAS",
+    phase: "Phase 3",
+    status: "Completed",
+    category: "other",
+    conditions: ["GPA", "MPA", "ANCA-GN"],
+    description:
+      "Pivotal international RCT (704 patients) that definitively tested whether adding plasma exchange (plasmapheresis) to standard immunosuppression reduces death or end-stage kidney disease in severe AAV with GFR <50 ml/min or pulmonary hemorrhage. Published in NEJM 2020: plasma exchange did NOT reduce the primary endpoint at 7 years, challenging decades of prior practice. However, reduced-dose glucocorticoids were non-inferior to standard dosing with fewer serious infections — a practice-changing result now adopted in most guidelines.",
+    locations: "Global (countries across North America, Europe, Australia)",
+    enrollment: 704,
+    updated: "2023-06-01",
+    outcome_signal: "neutral",
+    url: "https://clinicaltrials.gov/study/NCT00987389",
+  },
+  {
+    id: "ANCA-GN-IPTACOPAN",
+    title: "Iptacopan (Factor B Inhibitor) for ANCA-Associated Glomerulonephritis",
+    sponsor: "Novartis",
+    phase: "Phase 2/3",
+    status: "Recruiting",
+    category: "complement",
+    conditions: ["GPA", "MPA", "ANCA-GN"],
+    description:
+      "Evaluates iptacopan — an oral complement factor B inhibitor (alternative pathway blockade) — added to standard rituximab-based induction therapy for active ANCA-GN. Complement activation via the alternative pathway amplifies glomerular inflammation in ANCA-GN even without immune-complex deposition. Iptacopan has demonstrated kidney-protective effects in IgA nephropathy; this trial extends that hypothesis to ANCA-GN. Primary endpoint: eGFR improvement and reduction of urinary active sediment at 6 months.",
+    locations: "Global",
+    enrollment: 120,
+    updated: "2025-11-01",
+    outcome_signal: "neutral",
+    url: "https://clinicaltrials.gov",
+  },
+  {
+    id: "NCT05112029",
+    title: "Felzartamab (Anti-CD38) for Refractory ANCA-Associated Glomerulonephritis",
+    sponsor: "HI-Bio (MorphoSys)",
+    phase: "Phase 2",
+    status: "Recruiting",
+    category: "b_cell",
+    conditions: ["GPA", "MPA", "ANCA-GN"],
+    description:
+      "Tests felzartamab — a fully human anti-CD38 monoclonal antibody — in patients with ANCA-GN who have failed or are intolerant to standard induction therapy. CD38 is expressed on plasma cells and plasmablasts that produce ANCA autoantibodies; depleting these long-lived antibody-producing cells could reduce ANCA titers more durably than B-cell depletion alone. Builds on promising Phase 2 data in antibody-mediated rejection of kidney transplants. Primary endpoint: ANCA titer reduction and renal response at 26 weeks.",
+    locations: "United States, Europe",
+    enrollment: 30,
+    updated: "2025-12-01",
+    outcome_signal: "promising",
+    url: "https://clinicaltrials.gov/study/NCT05112029",
   },
 ];
 
@@ -665,6 +817,26 @@ function TrialCard({ trial, isExpanded, onToggle }) {
               {statusIcon} {trial.status}
             </span>
             <SignalBadge signal={trial.outcome_signal} />
+            {(trial.conditions || []).map((cond) => {
+              const condColor = { GPA: "#3B82F6", MPA: "#10B981", EGPA: "#F59E0B", "ANCA-GN": "#EF4444" }[cond] || "#6B7280";
+              return (
+                <span
+                  key={cond}
+                  style={{
+                    background: condColor + "22",
+                    color: condColor,
+                    border: `1px solid ${condColor}44`,
+                    padding: "1px 7px",
+                    borderRadius: "4px",
+                    fontSize: "10px",
+                    fontWeight: 600,
+                    letterSpacing: "0.3px",
+                  }}
+                >
+                  {cond}
+                </span>
+              );
+            })}
           </div>
           <h3
             style={{
@@ -1038,6 +1210,7 @@ export default function ANCATrialsDashboard() {
   const [trials] = useState(SEED_TRIALS);
   const [activeTab, setActiveTab] = useState("trials");
   const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCondition, setActiveCondition] = useState("all");
   const [expandedId, setExpandedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showInfo, setShowInfo] = useState(false);
@@ -1056,14 +1229,19 @@ export default function ANCATrialsDashboard() {
     }
   }, []);
 
+  const CONDITION_KEY_MAP = { gpa: "GPA", mpa: "MPA", egpa: "EGPA", anca_gn: "ANCA-GN" };
+
   const filtered = trials.filter((t) => {
     const matchCat = activeCategory === "all" || t.category === activeCategory;
+    const matchCondition =
+      activeCondition === "all" ||
+      (t.conditions || []).includes(CONDITION_KEY_MAP[activeCondition]);
     const matchSearch =
       !searchTerm ||
       t.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.id.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchCat && matchSearch;
+    return matchCat && matchCondition && matchSearch;
   });
 
   const sorted = [...filtered].sort((a, b) => new Date(b.updated) - new Date(a.updated));
@@ -1207,7 +1385,7 @@ export default function ANCATrialsDashboard() {
             <SignalLegend />
 
             {/* Filters */}
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "20px", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "12px", alignItems: "center" }}>
               <input
                 type="text"
                 placeholder="Search trials, IDs, or keywords..."
@@ -1245,6 +1423,43 @@ export default function ANCATrialsDashboard() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* Condition filter */}
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px", alignItems: "center" }}>
+              <span style={{ fontSize: "11px", color: "#475569", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.05em", marginRight: "4px" }}>
+                Condition:
+              </span>
+              {Object.entries(CONDITIONS).map(([key, label]) => {
+                const CONDITION_COLORS = {
+                  all: { active: "rgba(100,116,139,0.2)", activeBorder: "rgba(100,116,139,0.4)", activeText: "#94A3B8" },
+                  gpa: { active: "rgba(59,130,246,0.2)", activeBorder: "rgba(59,130,246,0.4)", activeText: "#60A5FA" },
+                  mpa: { active: "rgba(16,185,129,0.2)", activeBorder: "rgba(16,185,129,0.4)", activeText: "#34D399" },
+                  egpa: { active: "rgba(245,158,11,0.2)", activeBorder: "rgba(245,158,11,0.4)", activeText: "#FBBF24" },
+                  anca_gn: { active: "rgba(239,68,68,0.2)", activeBorder: "rgba(239,68,68,0.4)", activeText: "#F87171" },
+                };
+                const col = CONDITION_COLORS[key];
+                const isActive = activeCondition === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setActiveCondition(key)}
+                    style={{
+                      background: isActive ? col.active : "rgba(15,23,42,0.4)",
+                      border: `1px solid ${isActive ? col.activeBorder : "rgba(148,163,184,0.1)"}`,
+                      color: isActive ? col.activeText : "#64748B",
+                      borderRadius: "20px",
+                      padding: "5px 12px",
+                      cursor: "pointer",
+                      fontSize: "12px",
+                      fontWeight: isActive ? 600 : 400,
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
 
             <div style={{ marginBottom: "12px", fontSize: "12px", color: "#475569" }}>
