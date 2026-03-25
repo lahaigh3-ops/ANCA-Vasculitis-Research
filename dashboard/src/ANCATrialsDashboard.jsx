@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import DiseaseConnections from "./DiseaseConnections";
 
 const CATEGORIES = {
   all: "All Trials",
@@ -1501,9 +1502,7 @@ export default function ANCATrialsDashboard() {
                 How ANCA vasculitis presents across organ systems and related conditions — with research context, symptoms, and guidance for conversations with your care team. Click any card to expand.
               </p>
             </div>
-            {DISEASE_CONNECTIONS.map((condition) => (
-              <ConnectionCard key={condition.id} condition={condition} />
-            ))}
+            <DiseaseConnections />
           </>
         )}
 
