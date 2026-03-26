@@ -1,11 +1,32 @@
 import { useState } from "react";
 
+const PHASE_COLORS = {
+  "Phase 1": "#F59E0B",
+  "Phase 1/2": "#F97316",
+  "Phase 2": "#3B82F6",
+  "Phase 2/3": "#6366F1",
+  "Phase 3": "#10B981",
+  "Phase 4": "#06B6D4",
+  Observational: "#8B5CF6",
+  Preclinical: "#EF4444",
+};
+
+const STATUS_ICONS = {
+  Recruiting: "●",
+  Active: "◆",
+  Completed: "✓",
+  "Not yet recruiting": "○",
+  Unknown: "◇",
+};
+
 const CONNECTIONS = [
   {
     id: "anca-gn",
     name: "ANCA-Associated Glomerulonephritis",
     subtitle: "Renal manifestation of AAV",
     color: "#EF4444",
+    matchConditions: ["ANCA-GN"],
+    matchKeywords: ["kidney", "renal", "glomerulonephritis", "creatinine", "iptacopan", "felzartamab"],
     symptoms: [
       "Hematuria: visible or microscopic blood in urine",
       "Proteinuria: foamy or frothy urine indicating kidney leak",
@@ -30,6 +51,8 @@ const CONNECTIONS = [
     name: "Pulmonary Fibrosis in MPA",
     subtitle: "Irreversible lung scarring — can develop even during remission",
     color: "#06B6D4",
+    matchConditions: ["MPA"],
+    matchKeywords: ["fibrosis", "pulmonary fibrosis", "ild", "nintedanib", "lung scar", "anti-fibrotic"],
     symptoms: [
       "Progressive exertional dyspnea: shortness of breath that worsens with activity over months",
       "Dry, persistent cough unrelated to infection",
@@ -53,6 +76,8 @@ const CONNECTIONS = [
     name: "Hypertrophic Pachymeningitis",
     subtitle: "Dural inflammation associated with GPA / PR3-ANCA",
     color: "#8B5CF6",
+    matchConditions: ["GPA"],
+    matchKeywords: ["pachymeningitis", "dural", "meningitis"],
     communityNote:
       "Some members of ANCA vasculitis patient communities report being diagnosed with arachnoid cysts alongside GPA-related pachymeningitis. This co-occurrence is not yet well-characterized in the published literature, but patient-reported accounts suggest it may warrant clinical attention. If you have both conditions, documenting this history with your neurologist and rheumatologist — and asking whether the two could be connected — may help build awareness of this potential association.",
     symptoms: [
@@ -79,6 +104,8 @@ const CONNECTIONS = [
     name: "Arachnoid Cysts & GPA",
     subtitle: "Emerging patient-reported co-occurrence",
     color: "#A78BFA",
+    matchConditions: ["GPA"],
+    matchKeywords: ["arachnoid", "cyst"],
     communityNote:
       "Arachnoid cysts are typically considered incidental findings, but a subset of GPA patients report discovering them in the context of neurological symptoms or pachymeningitis workup. Whether GPA-related dural inflammation creates conditions for arachnoid cyst formation or expansion — or whether this represents chance co-occurrence in a population receiving frequent brain imaging — is an open question. Documenting and reporting such cases to your care team contributes to building clinical evidence.",
     symptoms: [
@@ -103,6 +130,8 @@ const CONNECTIONS = [
     name: "Orbital GPA / Pseudotumor",
     subtitle: "Granulomatous mass behind the eye — 15–20% of GPA patients",
     color: "#F97316",
+    matchConditions: ["GPA"],
+    matchKeywords: ["orbital", "orbit", "proptosis", "optic nerve"],
     symptoms: [
       "Proptosis: eye pushed forward out of the socket (exophthalmos)",
       "Periorbital pain, pressure, or aching behind the eye",
@@ -127,6 +156,8 @@ const CONNECTIONS = [
     name: "Subglottic Stenosis",
     subtitle: "Airway narrowing below the vocal cords — 15–25% of GPA patients",
     color: "#14B8A6",
+    matchConditions: ["GPA"],
+    matchKeywords: ["subglottic", "airway", "stenosis", "stridor"],
     symptoms: [
       "Inspiratory stridor: high-pitched squeaking or wheezing on breathing in",
       "Exertional dyspnea disproportionate to disease activity elsewhere",
@@ -151,6 +182,8 @@ const CONNECTIONS = [
     name: "Peripheral Neuropathy in AAV",
     subtitle: "Nerve damage from vessel inflammation — most common in EGPA",
     color: "#EC4899",
+    matchConditions: ["EGPA", "GPA", "MPA"],
+    matchKeywords: ["neuropath", "mononeuritis", "nerve damage"],
     symptoms: [
       "Mononeuritis multiplex: sudden, severe pain or weakness in a specific limb pattern — footdrop, wrist drop",
       "Burning, tingling, or numbness in hands or feet",
@@ -175,6 +208,8 @@ const CONNECTIONS = [
     name: "Cardiac Involvement in EGPA",
     subtitle: "Leading cause of EGPA-related death — present in up to 50% of cases",
     color: "#F43F5E",
+    matchConditions: ["EGPA"],
+    matchKeywords: ["cardiac", "heart", "troponin", "myocard", "cardiomyopath"],
     symptoms: [
       "Dyspnea at rest or with minimal exertion from eosinophilic cardiomyopathy",
       "Chest pain or pressure — can mimic acute coronary syndrome",
@@ -196,8 +231,25 @@ const CONNECTIONS = [
   },
 ];
 
-function ConnectionCard({ condition }) {
+function trialBadgeStyle(count) {
+  if (count >= 3) return { bg: "rgba(16,185,129,0.12)", color: "#10B981", border: "rgba(16,185,129,0.25)" };
+  if (count >= 1) return { bg: "rgba(245,158,11,0.12)", color: "#F59E0B", border: "rgba(245,158,11,0.25)" };
+  return { bg: "rgba(71,85,105,0.2)", color: "#475569", border: "rgba(71,85,105,0.3)" };
+}
+
+function ConnectionCard({ condition, trials }) {
   const [expanded, setExpanded] = useState(false);
+
+  const relatedTrials = (trials || []).filter((t) => {
+    const conditionMatch = t.conditions.some((c) => condition.matchConditions.includes(c));
+    const text = (t.title + " " + t.description).toLowerCase();
+    const keywordMatch =
+      condition.matchKeywords.length === 0 ||
+      condition.matchKeywords.some((kw) => text.includes(kw));
+    return conditionMatch && keywordMatch;
+  });
+
+  const badge = trialBadgeStyle(relatedTrials.length);
 
   return (
     <div
@@ -224,19 +276,40 @@ function ConnectionCard({ condition }) {
     >
       {/* Card header — always visible */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px" }}>
-        <div>
-          <h3
-            style={{
-              margin: "0 0 4px 0",
-              fontSize: "16px",
-              fontWeight: 600,
-              color: "#E2E8F0",
-              lineHeight: 1.4,
-              fontFamily: "'Source Serif 4', Georgia, serif",
-            }}
-          >
-            {condition.name}
-          </h3>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "4px" }}>
+            <h3
+              style={{
+                margin: 0,
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#E2E8F0",
+                lineHeight: 1.4,
+                fontFamily: "'Source Serif 4', Georgia, serif",
+              }}
+            >
+              {condition.name}
+            </h3>
+            <span
+              style={{
+                background: badge.bg,
+                color: badge.color,
+                border: `1px solid ${badge.border}`,
+                borderRadius: "10px",
+                padding: "1px 8px",
+                fontSize: "11px",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              {relatedTrials.length === 0
+                ? "no targeted trials"
+                : relatedTrials.length === 1
+                ? "1 active trial"
+                : `${relatedTrials.length} active trials`}
+            </span>
+          </div>
           {condition.subtitle && (
             <div style={{ fontSize: "12px", color: "#64748B", fontStyle: "italic" }}>{condition.subtitle}</div>
           )}
@@ -260,7 +333,7 @@ function ConnectionCard({ condition }) {
           onClick={(e) => e.stopPropagation()}
           style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(148,163,184,0.1)", cursor: "default" }}
         >
-          {/* Community note — pachymeningitis and arachnoid cyst */}
+          {/* Community note */}
           {condition.communityNote && (
             <div
               style={{
@@ -289,14 +362,15 @@ function ConnectionCard({ condition }) {
             </div>
           )}
 
+          {/* Symptoms + Doctor tips */}
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: "20px",
+              marginBottom: "24px",
             }}
           >
-            {/* Key Symptoms */}
             <div>
               <div
                 style={{
@@ -310,15 +384,7 @@ function ConnectionCard({ condition }) {
               >
                 Key Symptoms
               </div>
-              <ul
-                style={{
-                  margin: 0,
-                  padding: "0 0 0 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
+              <ul style={{ margin: 0, padding: "0 0 0 16px", display: "flex", flexDirection: "column", gap: "6px" }}>
                 {condition.symptoms.map((s, i) => (
                   <li key={i} style={{ color: "#94A3B8", fontSize: "13px", lineHeight: 1.6 }}>
                     {s}
@@ -327,7 +393,6 @@ function ConnectionCard({ condition }) {
               </ul>
             </div>
 
-            {/* Doctor Guidance */}
             <div>
               <div
                 style={{
@@ -341,15 +406,7 @@ function ConnectionCard({ condition }) {
               >
                 How to Talk to Your Doctor
               </div>
-              <ul
-                style={{
-                  margin: 0,
-                  padding: "0 0 0 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                }}
-              >
+              <ul style={{ margin: 0, padding: "0 0 0 16px", display: "flex", flexDirection: "column", gap: "6px" }}>
                 {condition.doctorTips.map((tip, i) => (
                   <li key={i} style={{ color: "#94A3B8", fontSize: "13px", lineHeight: 1.6 }}>
                     {tip}
@@ -371,17 +428,109 @@ function ConnectionCard({ condition }) {
               </div>
             </div>
           </div>
+
+          {/* Related Research */}
+          <div style={{ borderTop: "1px solid rgba(148,163,184,0.08)", paddingTop: "20px" }}>
+            <div
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                color: "#475569",
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                marginBottom: "12px",
+              }}
+            >
+              Related Research
+            </div>
+
+            {relatedTrials.length === 0 ? (
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "13px",
+                  color: "#475569",
+                  lineHeight: 1.7,
+                  fontStyle: "italic",
+                }}
+              >
+                No trials are currently targeting this manifestation specifically. It is typically addressed as a
+                secondary outcome within broader GPA / MPA / EGPA trials.
+              </p>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {relatedTrials.map((t) => {
+                  const phaseColor = PHASE_COLORS[t.phase] || "#64748B";
+                  const statusIcon = STATUS_ICONS[t.status] || "◇";
+                  const snippet = t.description.length > 120 ? t.description.slice(0, 120) + "…" : t.description;
+                  const titleDisplay = t.title.length > 80 ? t.title.slice(0, 80) + "…" : t.title;
+                  return (
+                    <a
+                      key={t.id}
+                      href={t.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        display: "block",
+                        background: "rgba(15,23,42,0.5)",
+                        border: "1px solid rgba(148,163,184,0.1)",
+                        borderRadius: "6px",
+                        padding: "12px 14px",
+                        textDecoration: "none",
+                        transition: "border-color 0.15s, background 0.15s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = "rgba(148,163,184,0.25)";
+                        e.currentTarget.style.background = "rgba(15,23,42,0.8)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)";
+                        e.currentTarget.style.background = "rgba(15,23,42,0.5)";
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px", marginBottom: "5px" }}>
+                        <span style={{ fontSize: "13px", fontWeight: 600, color: "#CBD5E1", lineHeight: 1.4, flex: 1 }}>
+                          {titleDisplay}
+                        </span>
+                        <span style={{ color: "#475569", fontSize: "12px", flexShrink: 0 }}>↗</span>
+                      </div>
+                      <div style={{ display: "flex", gap: "6px", alignItems: "center", marginBottom: "6px", flexWrap: "wrap" }}>
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            fontWeight: 700,
+                            color: phaseColor,
+                            background: `${phaseColor}18`,
+                            border: `1px solid ${phaseColor}40`,
+                            borderRadius: "8px",
+                            padding: "1px 7px",
+                          }}
+                        >
+                          {t.phase}
+                        </span>
+                        <span style={{ fontSize: "11px", color: "#64748B" }}>
+                          {statusIcon} {t.status}
+                        </span>
+                      </div>
+                      <p style={{ margin: 0, fontSize: "12px", color: "#64748B", lineHeight: 1.6 }}>{snippet}</p>
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-export default function DiseaseConnections() {
+export default function DiseaseConnections({ trials }) {
   return (
     <>
       {CONNECTIONS.map((condition) => (
-        <ConnectionCard key={condition.id} condition={condition} />
+        <ConnectionCard key={condition.id} condition={condition} trials={trials} />
       ))}
     </>
   );

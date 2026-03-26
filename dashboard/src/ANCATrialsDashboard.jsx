@@ -1225,7 +1225,7 @@ export default function ANCATrialsDashboard() {
                 How ANCA vasculitis presents across organ systems and related conditions — with research context, symptoms, and guidance for conversations with your care team. Click any card to expand.
               </p>
             </div>
-            <DiseaseConnections />
+            <DiseaseConnections trials={SEED_TRIALS} />
           </>
         )}
 
