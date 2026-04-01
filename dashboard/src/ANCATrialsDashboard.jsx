@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import DiseaseConnections from "./DiseaseConnections";
+import CaseStudies from "./CaseStudies";
 
 const CATEGORIES = {
   all: "All Trials",
@@ -1048,7 +1049,7 @@ export default function ANCATrialsDashboard() {
 
           {/* Tab navigation */}
           <div style={{ display: "flex", gap: "0", marginTop: "20px", borderBottom: "1px solid rgba(148,163,184,0.08)" }}>
-            {[["trials", "Clinical Trials"], ["connections", "Disease Connections"], ["centers", "Research & Centers"]].map(([key, label]) => (
+            {[["trials", "Clinical Trials"], ["connections", "Disease Connections"], ["case-studies", "Case Studies"], ["centers", "Research & Centers"]].map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
@@ -1226,6 +1227,29 @@ export default function ANCATrialsDashboard() {
               </p>
             </div>
             <DiseaseConnections trials={SEED_TRIALS} />
+          </>
+        )}
+
+        {activeTab === "case-studies" && (
+          <>
+            <div style={{ marginBottom: "28px" }}>
+              <h2
+                style={{
+                  margin: "0 0 6px 0",
+                  fontSize: "18px",
+                  fontWeight: 600,
+                  color: "#E2E8F0",
+                  fontFamily: "'Source Serif 4', Georgia, serif",
+                }}
+              >
+                Case Studies
+              </h2>
+              <p style={{ margin: 0, fontSize: "13px", color: "#64748B", lineHeight: 1.6 }}>
+                Real patient scenarios across each disease connection — what happened, what worked, and what you can do right now.
+                Each entry synthesises the consistent pattern across multiple cases so you can act on the most reliable signal.
+              </p>
+            </div>
+            <CaseStudies />
           </>
         )}
 
